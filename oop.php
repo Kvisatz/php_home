@@ -1,3 +1,9 @@
+<?php
+	session_start();
+	// if () {
+	// 	# code...
+	// }
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,6 +19,20 @@
 			width: 30%;
 		}
 	</style>
+	<?php
+		if(isset($_GET['data']) && $_GET['data'] == 'error'){
+			echo 'неверные данные';
+		}
+		else if (isset($_GET['data'])) {
+			$userName = $_GET['data'];
+			$user = json_decode($_SESSION[$userName]);	
+		}
+	?>	<P>Приветствую тебя о великий 
+			<?php
+				echo $user->name;
+			?>
+			<a href="oop.php?exit=true">Quit</a>
+		</p>
 	<form action="help.php" method="POST" enctype="multipart/form-data">
 		<label for="name">Enter Your Name</label>
 		<input type="text" name="name" id="name">
@@ -29,5 +49,5 @@
 </body>
 </html>
 <?php
-	echo 1;
+	
 ?>

@@ -1,6 +1,7 @@
 <?php 
+session_start();
 	// print_r($_POST);
-	//print_r($_FILES);
+	// print_r($_FILES);
 
 	/**
 	 * 
@@ -22,7 +23,20 @@
 		// 	}
 		// }
 		public function send($name, $mail, $pass,$avatar){
-			$user = [];
+			if(isset($name) && isset($mail) && isset($pass) && isset($avatar)){
+				$user = [
+						"name" => $name,
+						"mail" => $mail,
+						"pass" => $pass,
+						"avatar" => $avatar,
+					];
+					$_SESSION[$name] = json_encode($user);
+					print_r($_SESSION);
+					header("location: oop.php?data={$name}");
+			}
+			else{
+				header("location: oop.php?data=error");
+			}
 		}
 		function __construct($userData, $userAvatar){
 			//print_r($userData);
@@ -49,7 +63,7 @@
 					else{
 						echo "Проверочный пароль несовпадает";
 					}
-					print_r($userAvatar);
+					// print_r($userAvatar);
 					if (isset($userAvatar) && $userAvatar['type'] == 'image/jpeg') {
 						$this->avatar = md5($userAvatar['name']).".jpeg";
 						echo $this->avatar;
@@ -73,11 +87,11 @@
 			else{
 				echo "Заполните все поля формы";
 			}
-
+			$this->send($this->name, $this->mail, $this->pass, $this->avatar);
 		}
 		
 	}
 
-
+	new UserData($_POST, $_FILES['avatar']);
 
 ?>
