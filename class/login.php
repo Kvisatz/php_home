@@ -7,6 +7,7 @@
 		private $login = null;
 		private $password = null;
 		public $errors = [];
+		public $symbols = ["%","$","*"];
 		function __construct($user){
 			$validData = Validator::maxLengthValidator($user['login'], 5);
 
@@ -23,7 +24,7 @@
 				// $this->login = $user['login'];
 				$this->errors[] = $validData['msg'];
 			}
-			$validData = Validator::wrongSymbolValidator($user['login'], '%');
+			$validData = Validator::wrongSymbolValidator($user['login'], $this->symbols);
 			if(!$validData['status']){
 				$this->valid = false;
 				// $this->login = $user['login'];

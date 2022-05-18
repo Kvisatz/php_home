@@ -36,13 +36,18 @@ class Validator{
 		];
 	}
 	static function wrongSymbolValidator($str, $symbol){
-		
-		return (preg_match("/${symbol}/", $str))?
+		$flag = true;
+		foreach($symbol as $value){
+			if(str_contains($str, $value)){
+				$flag=false;
+			}
+		}
+		return ($flag)?
 		['status'=> true]
 		:
 		[
 			'status'=> false,
-			'msg' => "Недопустимый символ ". $symbol
+			'msg' => "Строка содержит недопустимый символ ". implode($symbol)
 		];
 	}
 
