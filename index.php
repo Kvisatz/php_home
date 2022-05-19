@@ -1,4 +1,6 @@
-
+<?php
+	session_start();
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,6 +9,9 @@
 	<title>Document</title>
 </head>
 <body>
+	<?php
+		if(!isset($_SESSION['auth'])):
+	?>
 	<form action="formobr.php" method="POST">
 		<label for="name">Введите имя</label>
 		<input type="text" id="name" name="name" placeholder="Login"></br>
@@ -14,6 +19,13 @@
 		<input type="password" id="pass" name="password" placeholder="Password">
 		<input type="submit">
 	</form>
+	<?php
+		else:
+	?>
+		<p>Приветствую тебя <a href="#">Выйти?</a>
+		</p>
+	<?php endif;?>
+	
 	<?php
 		if(isset($_GET['error']) && !empty($_GET['error'])){
 			$errors = json_decode($_GET['error']);

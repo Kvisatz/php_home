@@ -35,10 +35,10 @@ class Validator{
 			'msg' => "Минимальная длина поля больше ". $minLength
 		];
 	}
-	static function wrongSymbolValidator($str, $symbol){
+	static function wrongSymbolValidator($str, $symbols){
 		$flag = true;
-		foreach($symbol as $value){
-			if(str_contains($str, $value)){
+		foreach($symbols as $symbol){
+			if(str_contains($str, $symbol)){
 				$flag=false;
 			}
 		}
@@ -47,7 +47,7 @@ class Validator{
 		:
 		[
 			'status'=> false,
-			'msg' => "Строка содержит недопустимый символ ". implode($symbol)
+			'msg' => "Строка содержит недопустимый символ ". implode($symbols)
 		];
 	}
 
