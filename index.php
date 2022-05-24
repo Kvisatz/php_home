@@ -1,32 +1,25 @@
+<?php 
+	session_start();
+	
+	include('class/Basket.php');
+	
+?>
+
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Document</title>
+	<title>Я файл на сервере</title>
 </head>
 <body>
-	<form action="formobr.php" method="POST">
-		<label for="name">Введите имя</label>
-		<input type="text" id="name" name="name" placeholder="Login"></br>
-		<label for="pass">Введите пароль</label>
-		<input type="password" id="pass" name="password" placeholder="Password">
-		<input type="submit">
-	</form>
+	<p>Выберите товар</p>
 	<?php
-		if(isset($_GET['error']) && !empty($_GET['error'])){
-			$errors = json_decode($_GET['error']);
-			if (is_array($errors)) {
-				echo "<ul>";
-				foreach ($errors as $value) {
-					echo "<li>$value</li>";
-				}
-				echo "</ul>";
-			}
-			
-		}
-
+		// $goods = new Product();
+		
+		// $basket = new Basket();
+		// print_r($basket);
 	?>
 </body>
 </html>

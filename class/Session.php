@@ -1,10 +1,9 @@
 <?php
+class Session{
 
-	class Session{
-
-		function __construct(){
-			echo 'session class';
-		}
-
-
+	public function startSession(){
+		
 	}
+}
+
+?>
