@@ -1,5 +1,5 @@
 <?php
-include('class/DB.php');
+include_once('class/DB.php');
 class Product extends DB{
 	private $products = [];
 	public function __construct(){
