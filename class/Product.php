@@ -1,29 +1,19 @@
 <?php
-include('class/DB.php');
-class Product{
-	public $goods = [];
-	public $number;
-	public function __construct(){
-		$prods = new DB();
-		foreach($prods->data() as $good){
-			$item = $good['car'];
-			$this->goods[$item] = $item;
-			
-			 echo "<a href='obr.php?name=$item'>$item</a><br>";
-		}
-		print_r($this->goods);
+include_once('class/DB.php');
+class Product extends DB{
+
+	public function render(){
+		return $this->getProducts();
 	}
-	// public function __set($property, $value){
- //        switch ($property){
- //            case 'good': $this->good = $value; break; 
- //        }
- //    }
- //     public function __get($property){
- //        switch ($property){
- //            case 'good': return $this->good;
- //        }
- //    }
+	public function getProducts(){
+		return $this->select();
+	}
+	public function getProduct($productId){
+		foreach($this->select() as $product){
+			if($product['id'] == $productId){
+				return $product;
+			}
+		}
+		die('Error id product'); 
+	}
 }
-
-
-?>
