@@ -78,4 +78,26 @@ class Order extends Product{
 			return [];
 		}
 	}
+	public function orderProductChange($id, $amount){
+		$newDataSession = [];
+		foreach ($_SESSION['orders'] as $order) {
+			if($order['id'] == $id){
+				$order['count'] = $amount;
+			}
+			$newDataSession[] = $order;
+		}
+		$_SESSION['orders'] = $newDataSession;
+	}
+	public function orderProductDelete($delete_id){
+		$newDataSession = [];
+		foreach ($_SESSION['orders'] as $key=>$order) {
+			if($order['id'] == $delete_id){
+				unset($_SESSION['orders'][$key]);
+			}
+			else{
+				$newDataSession[] = $order;	
+			}	
+		}
+		$_SESSION['orders'] = $newDataSession;
+	}
 }

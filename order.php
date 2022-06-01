@@ -21,6 +21,15 @@
 			border: 1px solid #ccc;
 			padding: 10px;
 		}
+		.order{
+			position: absolute;
+			right:10px;
+			top: 0;
+		}
+		table td img{
+			width: 150px;
+			display: block;
+		}
 	</style>
 	<div class="order">
 		<p>
@@ -62,15 +71,23 @@
 				foreach(Order::writeOrderProduct() as $key=>$productOrder): 
 					$prodObj = new Product();
 					$product = $prodObj->getProduct($productOrder['id']);
-					$sum+=$product['count']*$product['price'];	
+					//print_r($productOrder);
+					//print_r($product);
+					$sum+=$productOrder['count']*$product['price'];	
 				 ?>
 					<tr>
 						<td><?php echo $key+1?></td>
 						<td><?php echo $product['name']?></td>
 						<td><img src="images/<?php echo $product['image']?>" alt=""></td>
-						<td><?php echo $product['count']  ?> шт.</td>
+						<td>
+							<form action="obr.php?productadd_id=<?php echo $productOrder['id']?>" method='POST'>
+								<input type="number" min='1' max='<?php echo $product['count']?>' name="<?php echo $productOrder['id']?>" value='<?php echo $productOrder['count']?>'>
+							</form>
+							 шт.
+						</td>
 						<td><?php echo $product['price']  ?> руб.</td>
-						<td><?php echo $product['count']*$product['price'] ?> руб.</td>
+						<td><?php echo $productOrder['count']*$product['price'] ?> руб.</td>
+						<td><a href="obr.php?delete_order=<?php echo $productOrder['id']?>">Удалить?</a></td>
 					</tr>
 				<?php endforeach; ?>
 				<tr>

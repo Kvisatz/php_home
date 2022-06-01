@@ -23,8 +23,13 @@ $products = $prod->render();
 		}
 		.wrap > div img{
 			display: block;
-			width: 100px;
-			height: 100px;
+			width: 150px;
+			height: auto;
+		}
+		.order{
+			position: absolute;
+			right:10px;
+			top: 0;
 		}
 	</style>
 	<div class="order">
