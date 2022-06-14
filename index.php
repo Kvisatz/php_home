@@ -1,61 +1,69 @@
-<style>
-	ul{
-		display: flex;
-		list-style: none;
-		margin-bottom: 0;
-	}
-	ul li{
-		padding: 5px 10px;
-	}
-	ul a{
-		padding: 5px 10px;
-		background-color: #ff0;
-		border: 1px solid #000;
-	}
-	.inner_ul{
-		flex-direction: column;
-		margin: 0;
-	}
-</style>
-
 <?php
-
-	$menu_items = ["Main", "Photos","Shop","Contacts"];
-	$main_items = ["First", "Second", "Third"];
-	$photo_items = ["Photo", "Photo", "Photo"];
-	$shop_items = ["Shop", "Shop", "Shop"];
-	$contact_items = ["Contacts", "Contacts", "Contacts"];
-	$list = "";
-
-	echo "<ul>";
-		for($i = 0; $i < count($menu_items); $i++){
-
-			if(!isset($_GET['items_list'])){
-				echo "<li><a href = 'index.php?items_list=".$menu_items[$i]."'>".$menu_items[$i]."</a></li>";
-			}
-			else{
-				echo "<li><a href = 'index.php?items_list=".$menu_items[$i]."'>".$menu_items[$i]."</a><ul>".$list."</ul></li>";
-				if($menu_items[$i] == 'Main' && $_GET['items_list'] == 'Main'){
-					$list = render($main_items);
-				}
-				if($menu_items[$i] == 'Photos' && $_GET['items_list'] == 'Photos'){
-					$list = render($photo_items);
-				}
-				if($menu_items[$i] == 'Shop' && $_GET['items_list'] == 'Shop'){
-					$list = render($shop_items);
-				}
-				if($menu_items[$i] == 'Contacts' && $_GET['items_list'] == 'Contacts'){
-					$list = render($contact_items);
-				}
-			}	
+	$link = new mysqli("localhost", "admin_web11", "1234", "web11_db");
+	
+	function selectData($link){
+		if(isset($_GET['abc_sort']) && $_GET['abc_sort'] == 'zyx'){
+			$sql = "SELECT id, name FROM `lang` ORDER BY name DESC";
 		}
-	echo "</ul>";
-	function render($arg){
-		echo "<ul class='inner_ul'>";
-		for($i = 0; $i < count($arg); $i++){
-			echo "<li><a href = 'index.php'>".$arg[$i]."</a></li>";
+		else{
+			$sql = "SELECT id, name FROM `lang` ORDER BY name ASC";
 		}
-		echo "</ul>";
+
+		$resource = $link->query($sql);
+
+		$data = [];
+
+		while($row = $resource->fetch_array(MYSQLI_ASSOC)){
+			$data[] = $row;
+		}
+		return $data;
 	}
-	//render($main_items);
+	if(isset($_POST['lang']) && isset($_POST['id'])){
+		$sql = 'UPDATE `lang` SET name = \''.$_POST['lang'].'\' WHERE id = '.$_POST['id'];
+		$link->query($sql);
+	}
+
+	if(isset($_GET['lang_delete'])){
+		$sql = 'DELETE FROM `lang` WHERE id = '.$_GET['lang_delete'];
+		$link->query($sql);
+	}
+
+	if(isset($_GET['lang_name'])){
+		$data = selectData($link);
+		// print_r($data);
+		$flag = false;
+		foreach ($data as $value){
+						if($value['name'] == $_GET['lang_name']){
+				$flag = true;
+				break;
+			}
+		}
+		if(!$flag){
+			$sql = 'INSERT INTO `lang` (name) VALUES(\''.$_GET['lang_name'].'\')';
+			$link->query($sql);
+		}
+		
+	}
+
+	$data = selectData($link);
+	echo "<ul>";
+	foreach ($data as $value) {
+		// if($_GET['lang_name'] === $value['name']){
+		// 	$sql = 'DELETE FROM `lang` WHERE name = \''.$_GET['lang_name'].'\'';
+		// 	$link->query($sql);
+		// }
+		echo "<li>{$value['name']}
+				<a href='index.php?lang_delete={$value['id']}''>delete</a>
+				<a href='update.php?lang_update={$value['id']}''>update</a>
+			 </li>";
+	}
+	echo "</ul>";
+
 ?>
+
+<form action="index.php" method="GET">
+	<input type="text" placeholder="Enter language" name="lang_name">
+	<input type="radio" name="abc_sort" value="abc" checked>abc
+	<input type="radio" name="abc_sort" value="zyx">zyx
+	<input type="submit" value="Add">
+</form>
