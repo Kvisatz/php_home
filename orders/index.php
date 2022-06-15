@@ -57,10 +57,14 @@
 					<h5>Цена</h5>
 				</div>
 				<div class="order_body">
-					<p>1</p>
-					<p>Молоко</p>
-					<p>28.01.2022</p>
-					<p>10000000</p>
+					<?php foreach($db->orders as $key=>$order):?>
+						<?php if($user['id'] == $order['user_id']): ?>
+						<p><?php echo $key+1?></p>
+						<p>Молоко</p>
+						<p>28.01.2022</p>
+						<p>10000000</p>
+						<?php endif; ?>
+					<?php endforeach;?>
 				</div>
 			<?php endforeach;?>
 		<?php endif;?>
